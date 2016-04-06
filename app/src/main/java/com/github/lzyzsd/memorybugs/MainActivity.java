@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     });
     private Rect mRect = null;
+    private StringBuffer mStringBuffer;
 
 
     @Override
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mStartAllocationButton.setOnClickListener(this);
 
         mToast =  Toast.makeText(this,"",Toast.LENGTH_SHORT);
+
     }
 
     @Override
@@ -66,12 +68,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 System.out.println("post delayed may leak");
             }
         }, 5000);
-        Toast.makeText(this, "请注意查看通知栏LeakMemory", Toast.LENGTH_SHORT).show();
+        mToast.setText("请注意查看通知栏LeakMemory");
+        mToast.show();
     }
 
     private void startAllocationLargeNumbersOfObjects() {
         mToast.setText("请注意查看MemoryMonitor 以及AllocationTracker");
         mToast.show();
+        mStringBuffer = new StringBuffer("-------: ");
         for (int i = 0; i < 10000; i++) {
             if (mRect == null) {          //避免创建大量的 mRect
                 mRect = new Rect(0, 0, 100, 100);
@@ -79,7 +83,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mRect.right = 100;
                 mRect.bottom = 100;
             }
-            System.out.println("-------: " + mRect.width());
+
+            mStringBuffer.append(mRect.width()); //避免创建大量的String
+            System.out.println(mStringBuffer);
+            mStringBuffer.delete(9, mStringBuffer.length());
         }
     }
 }
