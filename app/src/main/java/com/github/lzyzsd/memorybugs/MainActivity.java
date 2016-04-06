@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static TextView sTextView;
+    private TextView mTextView;//去掉static
     private Button mStartBButton;
     private Button mStartAllocationButton;
     Toast mToast ;
@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
     });
+
     private Rect mRect = null;
     private StringBuffer mStringBuffer;
 
@@ -34,8 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sTextView = (TextView) findViewById(R.id.tv_text);
-        sTextView.setText("Hello World!");
+        mTextView = (TextView) findViewById(R.id.tv_text);
+        mTextView.setText("Hello World!");
 
         mStartBButton = (Button) findViewById(R.id.btn_start_b);
         mStartBButton.setOnClickListener(this);
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mRect.right = 100;
                 mRect.bottom = 100;
             }
-
             mStringBuffer.append(mRect.width()); //避免创建大量的String
             System.out.println(mStringBuffer);
             mStringBuffer.delete(9, mStringBuffer.length());
