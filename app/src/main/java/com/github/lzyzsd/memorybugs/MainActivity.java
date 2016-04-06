@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static TextView sTextView;
     private Button mStartBButton;
     private Button mStartAllocationButton;
+    Toast mToast ;
 
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
     });
+    private Rect mRect = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mStartAllocationButton = (Button) findViewById(R.id.btn_allocation);
         mStartAllocationButton.setOnClickListener(this);
+
+        mToast =  Toast.makeText(this,"",Toast.LENGTH_SHORT);
     }
 
     @Override
@@ -65,10 +70,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startAllocationLargeNumbersOfObjects() {
-        Toast.makeText(this, "请注意查看MemoryMonitor 以及AllocationTracker", Toast.LENGTH_SHORT).show();
+        mToast.setText("请注意查看MemoryMonitor 以及AllocationTracker");
+        mToast.show();
         for (int i = 0; i < 10000; i++) {
-            Rect rect = new Rect(0, 0, 100, 100);
-            System.out.println("-------: " + rect.width());
+            if (mRect == null) {          //避免创建大量的 mRect
+                mRect = new Rect(0, 0, 100, 100);
+            } else {
+                mRect.right = 100;
+                mRect.bottom = 100;
+            }
+            System.out.println("-------: " + mRect.width());
         }
     }
 }
